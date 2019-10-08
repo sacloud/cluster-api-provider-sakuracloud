@@ -1,0 +1,30 @@
+---
+apiVersion: cluster.x-k8s.io/v1alpha2
+kind: Cluster
+metadata:
+  name: ${CLUSTER_NAME}
+spec:
+  clusterNetwork:
+    services:
+      cidrBlocks: ["${SERVICE_CIDR}"]
+    pods:
+      cidrBlocks: ["${CLUSTER_CIDR}"]
+    serviceDomain: ${SERVICE_DOMAIN}
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha2
+    kind: SakuraCloudCluster
+    name: ${CLUSTER_NAME}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha2
+kind: SakuraCloudCluster
+metadata:
+  name: ${CLUSTER_NAME}
+spec:
+  zone: "${SAKURACLOUD_ZONE}"
+  sourceArchive:
+    filters:
+      - name: "Name"
+        values:
+          - "${SAKURACLOUD_SOURCE_ARCHIVE_NAME}"
+  cloudProviderConfiguration:
+    zone: "${SAKURACLOUD_ZONE}"

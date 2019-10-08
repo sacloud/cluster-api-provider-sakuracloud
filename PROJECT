@@ -1,0 +1,13 @@
+version: "2"
+domain: usacloud.jp
+repo: github.com/sacloud/cluster-api-provider-sakuracloud
+resources:
+- group: infrastructure
+  version: v1alpha2
+  kind: SakuraCloudCluster
+- group: infrastructure
+  version: v1alpha2
+  kind: SakuraCloudMachine
+- group: infrastructure
+  version: v1alpha2
+  kind: SakuraCloudMachineTemplate

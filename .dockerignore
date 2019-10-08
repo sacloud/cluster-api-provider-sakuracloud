@@ -1,0 +1,12 @@
+.git
+.github
+.vscode
+bin/
+build/
+out/
+docs/
+scripts/
+**/.md
+/*.test
+/cluster-api-provider-sakuracloud
+/examples/provider-components/provider-components*.yaml

@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caps-controller-manager
+  namespace: caps-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: manager
+        image: ${CAPS_MANAGER_IMAGE}
+        args:
+        - --enable-leader-election
+        - --logtostderr
+        - --v=${CAPS_MANAGER_LOG_LEVEL}

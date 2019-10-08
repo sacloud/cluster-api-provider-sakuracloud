@@ -1,0 +1,59 @@
+apiVersion: cluster.x-k8s.io/v1alpha2
+kind: Machine
+metadata:
+  name: ${CLUSTER_NAME}-controlplane-0
+  labels:
+    cluster.x-k8s.io/control-plane: "true"
+    cluster.x-k8s.io/cluster-name: "${CLUSTER_NAME}"
+spec:
+  version: ${KUBERNETES_VERSION}
+  bootstrap:
+    configRef:
+      apiVersion: bootstrap.cluster.x-k8s.io/v1alpha2
+      kind: KubeadmConfig
+      name: ${CLUSTER_NAME}-controlplane-0
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha2
+    kind: SakuraCloudMachine
+    name: ${CLUSTER_NAME}-controlplane-0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha2
+kind: SakuraCloudMachine
+metadata:
+  name: ${CLUSTER_NAME}-controlplane-0
+  labels:
+    cluster.x-k8s.io/control-plane: "true"
+    cluster.x-k8s.io/cluster-name: "${CLUSTER_NAME}"
+spec:
+  cpus: ${SAKURACLOUD_CONTROLPLANE_CPUS}
+  memoryGB: ${SAKURACLOUD_CONTROLPLANE_MEMORY}
+  diskGB: ${SAKURACLOUD_CONTROLPLANE_DISK}
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha2
+kind: KubeadmConfig
+metadata:
+  name: ${CLUSTER_NAME}-controlplane-0
+spec:
+  initConfiguration:
+    nodeRegistration:
+      name: '{{ ds.meta_data.hostname }}'
+      kubeletExtraArgs:
+        cloud-provider: external
+  clusterConfiguration:
+    imageRepository: ${K8S_IMAGE_REPOSITORY}
+    apiServer:
+      extraArgs:
+        cloud-provider: external
+    controllerManager:
+      extraArgs:
+        cloud-provider: external
+  users:
+  - name: caps
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    sshAuthorizedKeys:
+    - '${SSH_AUTHORIZED_KEY}'
+  preKubeadmCommands:
+  - hostname "{{ ds.meta_data.hostname }}"
+  - echo "::1         ipv6-localhost ipv6-loopback" >/etc/hosts
+  - echo "127.0.0.1   localhost {{ ds.meta_data.hostname }}" >>/etc/hosts
+  - echo "{{ ds.meta_data.hostname }}" >/etc/hostname
