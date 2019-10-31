@@ -32,7 +32,7 @@ ENV_VAR_REQ=':?required'
 
 CABPK_MANAGER_IMAGE="${CABPK_MANAGER_IMAGE:-us.gcr.io/k8s-artifacts-prod/capi-kubeadm/cluster-api-kubeadm-controller:v0.1.3}"
 CAPI_MANAGER_IMAGE="${CAPI_MANAGER_IMAGE:-us.gcr.io/k8s-artifacts-prod/cluster-api/cluster-api-controller:v0.2.5}"
-CAPS_MANAGER_IMAGE="${CAPS_MANAGER_IMAGE:-sacloud/cluster-api-provider-sakuracloud:0.0.1}"
+CAPS_MANAGER_IMAGE="${CAPS_MANAGER_IMAGE:-sacloud/cluster-api-provider-sakuracloud:0.0.2}"
 K8S_IMAGE_REPOSITORY="${K8S_IMAGE_REPOSITORY:-k8s.gcr.io}"
 
 # Set the default log levels for the manager containers.
