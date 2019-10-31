@@ -23,6 +23,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/pkg/errors"
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/services"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/tools/record"
@@ -37,6 +38,8 @@ import (
 	infrav1 "github.com/sacloud/cluster-api-provider-sakuracloud/api/v1alpha2"
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/config"
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/context"
+
+	clusterv1errors "sigs.k8s.io/cluster-api/errors"
 )
 
 const (
@@ -130,6 +133,35 @@ func (r *SakuraCloudMachineReconciler) Reconcile(req ctrl.Request) (_ ctrl.Resul
 		sakuracloudMachine)
 	if err != nil {
 		return reconcile.Result{}, errors.Wrapf(err, "failed to create machine context")
+	}
+
+	// complete cluster spec
+	if sakuracloudMachine.Spec.SourceArchive.ID == nil {
+		archive, err := machineContext.Session.FindArchive(machineContext, machineContext.Zone(), sakuracloudMachine.Spec.SourceArchive.Filters)
+		if err != nil {
+			machineContext.SetMachineError(clusterv1errors.InvalidConfigurationMachineError, err.Error())
+			return reconcile.Result{}, errors.Errorf("failed to set source archive id: %+v", err)
+		}
+
+		if archive == nil {
+			machineContext.SetMachineError(clusterv1errors.InvalidConfigurationMachineError, "archive not found")
+			return reconcile.Result{}, errors.Errorf("failed to set source archive id: %+v", "archive not found")
+		}
+
+		id := archive.ID.String()
+		machineContext.SakuraCloudMachine.Spec.SourceArchive.ID = &id
+	}
+
+	if sakuracloudMachine.Status.SourceArchive == nil {
+		archive, err := machineContext.Session.ReadArchive(machineContext, machineContext.Zone(), types.StringID(*sakuracloudMachine.Spec.SourceArchive.ID))
+		if err != nil {
+			machineContext.SetMachineError(clusterv1errors.InvalidConfigurationMachineError, err.Error())
+			return reconcile.Result{}, errors.Errorf("failed to get source archive info: %+v", err)
+		}
+		sakuracloudMachine.Status.SourceArchive = &infrav1.SourceArchiveInfo{
+			ID:   archive.ID.String(),
+			Name: archive.Name,
+		}
 	}
 
 	// Always close the context when exiting this function so we can persist any SakuraCloudMachine changes.

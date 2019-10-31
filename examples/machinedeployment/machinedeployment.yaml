@@ -32,6 +32,11 @@ metadata:
 spec:
   template:
     spec:
+      sourceArchive:
+        filters:
+          - name: "Name"
+            values:
+              - "${SAKURACLOUD_SOURCE_ARCHIVE_NAME}"
       cpus: ${SAKURACLOUD_MD_CPUS}
       memoryGB: ${SAKURACLOUD_MD_MEMORY}
       diskGB: ${SAKURACLOUD_MD_DISK}

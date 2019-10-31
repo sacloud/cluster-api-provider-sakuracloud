@@ -203,6 +203,40 @@ spec:
                       description: ProviderID is the unique identifier as specified
                         by the cloud provider.
                       type: string
+                    sourceArchive:
+                      description: SourceArchive .
+                      properties:
+                        filters:
+                          description: "Filters is a set of key/value pairs used to
+                            identify a resource They are applied according to the
+                            rules defined by the SakuraCloud API: https://developer.sakura.ad.jp/cloud/api/1.1/
+                            \n If SakuraCloud API with Filters returns multiple results,
+                            it use first data of results"
+                          items:
+                            description: Filter is a filter used to identify an SakuraCloud
+                              resource
+                            properties:
+                              name:
+                                description: Name of the filter. Filter names are
+                                  case-sensitive.
+                                type: string
+                              values:
+                                description: Values includes one or more filter values.
+                                  Filter values are case-sensitive.
+                                items:
+                                  type: string
+                                type: array
+                            required:
+                            - name
+                            - values
+                            type: object
+                          type: array
+                        id:
+                          description: ID of resource
+                          type: string
+                      type: object
+                  required:
+                  - sourceArchive
                   type: object
               required:
               - spec

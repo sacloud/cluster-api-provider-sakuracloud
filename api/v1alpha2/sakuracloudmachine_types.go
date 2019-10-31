@@ -41,6 +41,9 @@ type SakuraCloudMachineSpec struct {
 	// +optional
 	MachineRef *SakuraCloudResourceReference `json:"machineRef,omitempty"`
 
+	// SourceArchive .
+	SourceArchive SakuraCloudResourceReference `json:"sourceArchive"`
+
 	// CPUs is the number of virtual processors in a virtual machine.
 	// Defaults to the analogue property value in the template from which this
 	// machine is cloned.
@@ -62,6 +65,13 @@ type SakuraCloudMachineStatus struct {
 
 	// Addresses contains the SakuraCloud instance associated addresses.
 	Addresses []v1.NodeAddress `json:"addresses,omitempty"`
+
+	// SourceArchiveInfo represents information of the node template image
+	//
+	// This value is set automatically at runtime and should not be set or
+	// modified by users.
+	// +optional
+	SourceArchive *SourceArchiveInfo `json:"sourceArchive,omitempty"`
 
 	// State is the state of the SakuraCloud instance for this machine.
 	State InstanceState `json:"state,omitempty"`
