@@ -20,11 +20,12 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
+
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
 
 	"github.com/sacloud/ftps"
 	"github.com/sacloud/libsacloud/v2/sacloud"

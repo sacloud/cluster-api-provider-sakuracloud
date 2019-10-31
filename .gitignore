@@ -52,3 +52,4 @@ out/
 /kubeconfig
 
 secret.yaml
+caps-example.kubeconfig

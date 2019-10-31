@@ -19,9 +19,9 @@ package controllers
 import (
 	goctx "context"
 	"fmt"
+
 	"github.com/go-logr/logr"
 	"github.com/pkg/errors"
-	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/client-go/tools/record"
 	clusterutilv1 "sigs.k8s.io/cluster-api/util"
@@ -34,7 +34,6 @@ import (
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/context"
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/services/cloudprovider"
 	infrautilv1 "github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/util"
-	clusterv1errors "sigs.k8s.io/cluster-api/errors"
 )
 
 const (
@@ -107,35 +106,6 @@ func (r *SakuraCloudClusterReconciler) Reconcile(req ctrl.Request) (_ ctrl.Resul
 			reterr = err
 		}
 	}()
-
-	// complete cluster spec
-	if sakuracloudCluster.Spec.SourceArchive.ID == nil {
-		archive, err := ctx.Session.FindArchive(ctx, ctx.Zone(), sakuracloudCluster.Spec.SourceArchive.Filters)
-		if err != nil {
-			ctx.SetClusterError(clusterv1errors.InvalidConfigurationClusterError, err.Error())
-			return reconcile.Result{}, errors.Errorf("failed to set source archive id: %+v", err)
-		}
-
-		if archive == nil {
-			ctx.SetClusterError(clusterv1errors.InvalidConfigurationClusterError, "archive not found")
-			return reconcile.Result{}, errors.Errorf("failed to set source archive id: %+v", "archive not found")
-		}
-
-		id := archive.ID.String()
-		ctx.SakuraCloudCluster.Spec.SourceArchive.ID = &id
-	}
-
-	if sakuracloudCluster.Status.SourceArchive == nil {
-		archive, err := ctx.Session.ReadArchive(ctx, ctx.Zone(), types.StringID(*sakuracloudCluster.Spec.SourceArchive.ID))
-		if err != nil {
-			ctx.SetClusterError(clusterv1errors.InvalidConfigurationClusterError, err.Error())
-			return reconcile.Result{}, errors.Errorf("failed to get source archive info: %+v", err)
-		}
-		sakuracloudCluster.Status.SourceArchive = &infrav1.SourceArchiveInfo{
-			ID:   archive.ID.String(),
-			Name: archive.Name,
-		}
-	}
 
 	// Handle deleted clusters
 	if !sakuracloudCluster.DeletionTimestamp.IsZero() {

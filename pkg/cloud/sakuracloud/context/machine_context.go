@@ -19,6 +19,7 @@ package context
 import (
 	"context"
 	"fmt"
+
 	"sigs.k8s.io/cluster-api/util/patch"
 
 	"github.com/sacloud/cluster-api-provider-sakuracloud/pkg/cloud/sakuracloud/session"

@@ -25,6 +25,11 @@ metadata:
     cluster.x-k8s.io/control-plane: "true"
     cluster.x-k8s.io/cluster-name: "${CLUSTER_NAME}"
 spec:
+  sourceArchive:
+    filters:
+      - name: "Name"
+        values:
+          - "${SAKURACLOUD_SOURCE_ARCHIVE_NAME}"
   cpus: ${SAKURACLOUD_CONTROLPLANE_CPUS}
   memoryGB: ${SAKURACLOUD_CONTROLPLANE_MEMORY}
   diskGB: ${SAKURACLOUD_CONTROLPLANE_DISK}

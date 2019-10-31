@@ -30,9 +30,8 @@ const (
 
 // SakuraCloudClusterSpec defines the desired state of SakuraCloudCluster
 type SakuraCloudClusterSpec struct {
-	Zone                       string                       `json:"zone"`
-	SourceArchive              SakuraCloudResourceReference `json:"sourceArchive"`
-	CloudProviderConfiguration SakuraCloudProviderConfig    `json:"cloudProviderConfiguration,omitempty"`
+	Zone                       string                    `json:"zone"`
+	CloudProviderConfiguration SakuraCloudProviderConfig `json:"cloudProviderConfiguration,omitempty"`
 }
 
 // SakuraCloudClusterStatus defines the observed state of SakuraCloudClusterSpec
@@ -42,13 +41,6 @@ type SakuraCloudClusterStatus struct {
 	// plane.
 	// +optional
 	APIEndpoints []APIEndpoint `json:"apiEndpoints,omitempty"`
-
-	// SourceArchiveInfo represents information of the node template image
-	//
-	// This value is set automatically at runtime and should not be set or
-	// modified by users.
-	// +optional
-	SourceArchive *SourceArchiveInfo `json:"sourceArchive,omitempty"`
 
 	// ErrorReason will be set in the event that there is a terminal problem
 	// reconciling the Machine and will contain a succinct value suitable

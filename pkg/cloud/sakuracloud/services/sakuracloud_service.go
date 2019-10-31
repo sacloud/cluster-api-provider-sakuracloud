@@ -47,7 +47,7 @@ func (s *SakuraCloudService) ReconcileServer(ctx *context.MachineContext) (*infr
 			ClusterName:     ctx.Cluster.Name,
 			NameSpace:       ctx.Cluster.Namespace,
 			IsControlPlane:  util.IsControlPlaneMachine(ctx.Machine),
-			SourceArchiveID: ctx.SakuraCloudCluster.Status.SourceArchive.ID,
+			SourceArchiveID: ctx.SakuraCloudMachine.Status.SourceArchive.ID,
 			BootstrapData:   *ctx.Machine.Spec.Bootstrap.Data,
 			Spec:            ctx.SakuraCloudMachine.Spec,
 		})

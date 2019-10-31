@@ -21,10 +21,5 @@ metadata:
   name: ${CLUSTER_NAME}
 spec:
   zone: "${SAKURACLOUD_ZONE}"
-  sourceArchive:
-    filters:
-      - name: "Name"
-        values:
-          - "${SAKURACLOUD_SOURCE_ARCHIVE_NAME}"
   cloudProviderConfiguration:
     zone: "${SAKURACLOUD_ZONE}"

@@ -65,44 +65,9 @@ spec:
                   description: Zone .
                   type: string
               type: object
-            sourceArchive:
-              description: SakuraCloudResourceReference is a reference to a specific
-                SakuraCloud resource by ID+Zone or filters. Only one of ID+Zone or
-                Filters may be specified. Specifying more than one will result in
-                a validation error.
-              properties:
-                filters:
-                  description: "Filters is a set of key/value pairs used to identify
-                    a resource They are applied according to the rules defined by
-                    the SakuraCloud API: https://developer.sakura.ad.jp/cloud/api/1.1/
-                    \n If SakuraCloud API with Filters returns multiple results, it
-                    use first data of results"
-                  items:
-                    description: Filter is a filter used to identify an SakuraCloud
-                      resource
-                    properties:
-                      name:
-                        description: Name of the filter. Filter names are case-sensitive.
-                        type: string
-                      values:
-                        description: Values includes one or more filter values. Filter
-                          values are case-sensitive.
-                        items:
-                          type: string
-                        type: array
-                    required:
-                    - name
-                    - values
-                    type: object
-                  type: array
-                id:
-                  description: ID of resource
-                  type: string
-              type: object
             zone:
               type: string
           required:
-          - sourceArchive
           - zone
           type: object
         status:
@@ -157,18 +122,6 @@ spec:
               type: string
             ready:
               type: boolean
-            sourceArchive:
-              description: "SourceArchiveInfo represents information of the node template
-                image \n This value is set automatically at runtime and should not
-                be set or modified by users."
-              properties:
-                id:
-                  description: ID .
-                  type: string
-                name:
-                  description: Name .
-                  type: string
-              type: object
           required:
           - ready
           type: object
