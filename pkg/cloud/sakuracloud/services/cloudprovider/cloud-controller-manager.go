@@ -89,6 +89,10 @@ func CloudControllerManagerDeployment(image, zone, clusterID string) *appsv1.Dep
 							Effect: corev1.TaintEffectNoSchedule,
 						},
 						{
+							Key:    "node.kubernetes.io/not-ready",
+							Effect: corev1.TaintEffectNoSchedule,
+						},
+						{
 							Key:      "CriticalAddonsOnly",
 							Operator: corev1.TolerationOpExists,
 						},
