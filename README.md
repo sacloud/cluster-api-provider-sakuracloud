@@ -181,11 +181,6 @@ metadata:
 spec:
   cloudProviderConfiguration:
     zone: 'is1a'
-  sourceArchive:
-    filters:
-    - name: Name
-      values:
-      - capi-kubernetes-template
   zone: 'is1a'
 ```
 
@@ -202,6 +197,11 @@ metadata:
   name: caps-example-controlplane-0
   namespace: default
 spec:
+  sourceArchive:
+    filters:
+    - name: Name
+      values:
+      - capi-kubernetes-template
   cpus: 2
   diskGB: 20
   memoryGB: 4
@@ -219,6 +219,11 @@ metadata:
 spec:
   template:
     spec:
+      sourceArchive:
+        filters:
+        - name: Name
+          values:
+          - capi-kubernetes-template
       cpus: 2
       diskGB: 20
       memoryGB: 2
