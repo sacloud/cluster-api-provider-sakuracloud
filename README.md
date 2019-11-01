@@ -72,7 +72,8 @@ export SSH_AUTHORIZED_KEY=`cat ~/.ssh/id_rsa.pub`
 # user-dataファイルの作成
 cat >workdir/user-data <<EOF
 #cloud-config
-ssh_authorized_keys: ${SSH_AUTHORIZED_KEY}
+ssh_authorized_keys:
+- ${SSH_AUTHORIZED_KEY}
 EOF
 
 # meta-dataファイルの作成
@@ -99,7 +100,7 @@ $(cd packer/sakuracloud; make plugins)
 
 # ビルド
 ARCHIVE_ID="$(usacloud archive read -q cloud-image-ubuntu-18.04)"
-ISO_IMAGE_ID="$(usacloud iso-image read -q cpacker-capi-image-builder)"
+ISO_IMAGE_ID="$(usacloud iso-image read -q packer-capi-image-builder)"
 PACKER_FLAGS="-var 'source_archive_id=${ARCHIVE_ID}' -var 'cloud_init_iso_image_id=${ISO_IMAGE_ID}'"
 make build-sakuracloud-default 
 ```
